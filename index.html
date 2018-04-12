@@ -23,20 +23,36 @@
 		(function() {
 			"use strict";
 
+			//Constants///////////////////////////////////////////////////////////////////////////////
+
+			// What framerate to run the algorithm in.
 			const FPS = 10;
+			// "delta time", used more as a speed scaler here.
 			const DT = 100 / FPS;
+
+			// Logo settings.
 			const MAX_LOGOS = 100;
-			const MAX_SPEED = 25;
-			const MIN_TIME = 0;
 			const MAX_TIME = 100;
 			const MAX_OFFSET = 100;
 			const LOGO_SCALE = 1;
+			
+			//Functions///////////////////////////////////////////////////////////////////////////////
 
-			function width(n) { return document.body.offsetWidth / (n || 1); }
-			function height(n) { return document.body.offsetHeight / (n || 1); }
+			function width(d) {
+				return document.body.offsetWidth / (d || 1);
+			}
+			function height(d) {
+				return document.body.offsetHeight / (d || 1);
+			}
+			function rand(min, max) {
+				return Math.random() * (max - min) + min;
+			}
+			
+			//Objects/////////////////////////////////////////////////////////////////////////////////
 
 			class Logo {
-				constructor() {					
+				constructor() {
+					// Create element and add it to the document body.
 					this.elem = document.createElement("div");
 					this.elem.className = "logo";
 					this.elem.style.width = "0px";
@@ -44,7 +60,13 @@
 					this.elem.style.position = "absolute";
 					document.body.appendChild(this.elem);
 
-					// brightness, saturate, hue-rotate
+					// These are parameters for the element's filter.
+					// We'll use these to create different colors.
+					//
+					// They follow this sequence:
+					//   [brightness, saturation, hue]
+					//
+					// I wish I could just multiply a white image by RGB values though.
 					this.filters = [
 						[100, 100, 0],		// red
 						[200, 100, 90],		// green
@@ -57,17 +79,18 @@
 					]
 					this.curr_filter = this.filters[0];
 
-					this.t = rand(MIN_TIME, MAX_TIME);
-					this.reset();
-
-					this.regex_brightness = /brightness\(.*\)/;
+					// We'll make each logo start at a random time.
+					this.t = rand(0, MAX_TIME);
+					this.regenerate();
 				}
 
+				// Set the element's CSS filter
 				set_filter(brightness, saturate, hue_rotate) {
 					this.elem.style.filter = "brightness(" + brightness + "%) saturate(" + saturate + "%) hue-rotate(" + hue_rotate + "deg)";
 				}
 
-				reset() {
+				// Generate new random offsets, calculate the direction and get a random filter.
+				regenerate() {
 					this.offset_x = rand(0, width());
 					this.offset_y = rand(0, height());
 					this.dir_x = (this.offset_x - width(2)) / 100;
@@ -75,30 +98,32 @@
 					this.curr_filter = this.filters[Math.floor(rand(0, this.filters.length))];
 				}
 
+				// Called on every frame.
 				update() {
 					if ((this.t += DT) > MAX_TIME) {
-						this.t = MIN_TIME;
-						this.reset();
+						this.t = 0;
+						this.regenerate();
 					}
 					
+					// We'll reduce the brightness according to the "depth" of the logo.
+					// It'll be darker the more distant it is from the viewer.
 					this.set_filter(this.curr_filter[0] * (this.t / MAX_TIME), this.curr_filter[1], this.curr_filter[2]);
 					
+					// This is where the fun begins.
 					this.elem.style.width = this.t * LOGO_SCALE + "px";
 					this.elem.style.height = this.t * LOGO_SCALE + "px";
-
 					this.elem.style.left = (this.offset_x + (this.t * this.dir_x)) + "px";
 					this.elem.style.top = (this.offset_y + (this.t * this.dir_y)) + "px";
 				}
 			}
-
-			function rand(min, max) {
-				return Math.random() * (max - min) + min;
-			}
 			
-			var logos = [];
+			//Setup///////////////////////////////////////////////////////////////////////////////////
 
+			const logos = [];
 			for (var i = 0; i < MAX_LOGOS; ++i)
 				logos.push(new Logo());
+			
+			//Main Loop///////////////////////////////////////////////////////////////////////////////
 
 			setInterval(function() {
 				for (var i = 0; i < MAX_LOGOS; ++i)
