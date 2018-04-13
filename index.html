@@ -1,134 +1,96 @@
 <!DOCTYPE html>
 <meta charset="utf-8"/>
 <html>
-	<style>
-		html, body {
-			background-color: black;
-			color: white;
-			overflow: hidden;
-			width: 100%;
-			height: 100%;
-		}
-		.logo {
-			background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiCiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiCiAgIHhtbG5zOmlua3NjYXBlPSJodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy9uYW1lc3BhY2VzL2lua3NjYXBlIgogICB3aWR0aD0iMTI4IgogICBoZWlnaHQ9IjEyOCIKICAgdmlld0JveD0iMCAwIDMzLjg2NjY2NiAzMy44NjY2NjciCiAgIHZlcnNpb249IjEuMSIKICAgaWQ9InN2ZzgiCiAgIHNvZGlwb2RpOmRvY25hbWU9IndpbmRvd3Nsb2dvLnN2ZyIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45Mi4xIHIxNTM3MSI+CiAgPGRlZnMKICAgICBpZD0iZGVmczIiPgogICAgPGZpbHRlcgogICAgICAgc3R5bGU9ImNvbG9yLWludGVycG9sYXRpb24tZmlsdGVyczpzUkdCIgogICAgICAgaW5rc2NhcGU6bGFiZWw9IkNvbG9yaXplIgogICAgICAgaWQ9ImZpbHRlcjM3MjUiPgogICAgICA8ZmVDb2xvck1hdHJpeAogICAgICAgICB0eXBlPSJodWVSb3RhdGUiCiAgICAgICAgIHZhbHVlcz0iMTgwIgogICAgICAgICByZXN1bHQ9ImNvbG9yMSIKICAgICAgICAgaWQ9ImZlQ29sb3JNYXRyaXgzNzIxIiAvPgogICAgICA8ZmVDb2xvck1hdHJpeAogICAgICAgICB2YWx1ZXM9Ii0xIDAgMCAwIDEgMCAtMSAwIDAgMSAwIDAgLTEgMCAxIC0wLjIxIC0wLjcyIC0wLjA3IDIgMCAiCiAgICAgICAgIHJlc3VsdD0iZmJTb3VyY2VHcmFwaGljIgogICAgICAgICBpZD0iZmVDb2xvck1hdHJpeDM3MjMiIC8+CiAgICAgIDxmZUNvbG9yTWF0cml4CiAgICAgICAgIHJlc3VsdD0iZmJTb3VyY2VHcmFwaGljQWxwaGEiCiAgICAgICAgIGluPSJmYlNvdXJjZUdyYXBoaWMiCiAgICAgICAgIHZhbHVlcz0iMCAwIDAgLTEgMCAwIDAgMCAtMSAwIDAgMCAwIC0xIDAgMCAwIDAgMSAwIgogICAgICAgICBpZD0iZmVDb2xvck1hdHJpeDM2ODIiIC8+CiAgICAgIDxmZUNvbXBvc2l0ZQogICAgICAgICBpbjI9ImZiU291cmNlR3JhcGhpYyIKICAgICAgICAgaWQ9ImZlQ29tcG9zaXRlMzY4NCIKICAgICAgICAgb3BlcmF0b3I9ImFyaXRobWV0aWMiCiAgICAgICAgIGsxPSIwIgogICAgICAgICBrMj0iMSIKICAgICAgICAgcmVzdWx0PSJjb21wb3NpdGUxIgogICAgICAgICBpbj0iZmJTb3VyY2VHcmFwaGljIgogICAgICAgICBrMz0iMCIKICAgICAgICAgazQ9IjAiIC8+CiAgICAgIDxmZUNvbG9yTWF0cml4CiAgICAgICAgIGlkPSJmZUNvbG9yTWF0cml4MzY4NiIKICAgICAgICAgaW49ImNvbXBvc2l0ZTEiCiAgICAgICAgIHZhbHVlcz0iMSIKICAgICAgICAgdHlwZT0ic2F0dXJhdGUiCiAgICAgICAgIHJlc3VsdD0iY29sb3JtYXRyaXgxIiAvPgogICAgICA8ZmVGbG9vZAogICAgICAgICBpZD0iZmVGbG9vZDM2ODgiCiAgICAgICAgIGZsb29kLW9wYWNpdHk9IjEiCiAgICAgICAgIGZsb29kLWNvbG9yPSJyZ2IoMjU1LDAsMCkiCiAgICAgICAgIHJlc3VsdD0iZmxvb2QxIiAvPgogICAgICA8ZmVCbGVuZAogICAgICAgICBpbjI9ImNvbG9ybWF0cml4MSIKICAgICAgICAgaWQ9ImZlQmxlbmQzNjkwIgogICAgICAgICBpbj0iZmxvb2QxIgogICAgICAgICBtb2RlPSJtdWx0aXBseSIKICAgICAgICAgcmVzdWx0PSJibGVuZDEiIC8+CiAgICAgIDxmZUJsZW5kCiAgICAgICAgIGluMj0iYmxlbmQxIgogICAgICAgICBpZD0iZmVCbGVuZDM2OTIiCiAgICAgICAgIG1vZGU9InNjcmVlbiIKICAgICAgICAgcmVzdWx0PSJibGVuZDIiIC8+CiAgICAgIDxmZUNvbG9yTWF0cml4CiAgICAgICAgIGlkPSJmZUNvbG9yTWF0cml4MzY5NCIKICAgICAgICAgaW49ImJsZW5kMiIKICAgICAgICAgdmFsdWVzPSIxIgogICAgICAgICB0eXBlPSJzYXR1cmF0ZSIKICAgICAgICAgcmVzdWx0PSJjb2xvcm1hdHJpeDIiIC8+CiAgICAgIDxmZUNvbXBvc2l0ZQogICAgICAgICBpbjI9ImZiU291cmNlR3JhcGhpYyIKICAgICAgICAgaWQ9ImZlQ29tcG9zaXRlMzY5NiIKICAgICAgICAgaW49ImNvbG9ybWF0cml4MiIKICAgICAgICAgb3BlcmF0b3I9ImluIgogICAgICAgICByZXN1bHQ9ImNvbXBvc2l0ZTIiIC8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJiYXNlIgogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIKICAgICBib3JkZXJvcGFjaXR5PSIxLjAiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTp6b29tPSI0LjQxNzM2NDIiCiAgICAgaW5rc2NhcGU6Y3g9IjIyLjQ1Mzk4OSIKICAgICBpbmtzY2FwZTpjeT0iNTcuOTg0MzU1IgogICAgIGlua3NjYXBlOmRvY3VtZW50LXVuaXRzPSJtbSIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJ0ZXh0MzY4MiIKICAgICBzaG93Z3JpZD0iZmFsc2UiCiAgICAgdW5pdHM9InB4IgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMjU2MCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDU3IgogICAgIGlua3NjYXBlOndpbmRvdy14PSIxMzUyIgogICAgIGlua3NjYXBlOndpbmRvdy15PSItOCIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIxIgogICAgIGlua3NjYXBlOnBhZ2VjaGVja2VyYm9hcmQ9InRydWUiIC8+CiAgPG1ldGFkYXRhCiAgICAgaWQ9Im1ldGFkYXRhNSI+CiAgICA8cmRmOlJERj4KICAgICAgPGNjOldvcmsKICAgICAgICAgcmRmOmFib3V0PSIiPgogICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0PgogICAgICAgIDxkYzp0eXBlCiAgICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIgLz4KICAgICAgICA8ZGM6dGl0bGU+PC9kYzp0aXRsZT4KICAgICAgPC9jYzpXb3JrPgogICAgPC9yZGY6UkRGPgogIDwvbWV0YWRhdGE+CiAgPGcKICAgICBpbmtzY2FwZTpsYWJlbD0iQ2FtYWRhIDEiCiAgICAgaW5rc2NhcGU6Z3JvdXBtb2RlPSJsYXllciIKICAgICBpZD0ibGF5ZXIxIgogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsLTI2My4xMzMzMikiPgogICAgPGcKICAgICAgIGFyaWEtbGFiZWw9IsO/IgogICAgICAgdHJhbnNmb3JtPSJzY2FsZSgwLjkxMzA5OTE1LDEuMDk1MTcxMykiCiAgICAgICBzdHlsZT0iZm9udC1zdHlsZTpub3JtYWw7Zm9udC13ZWlnaHQ6bm9ybWFsO2ZvbnQtc2l6ZTo1OC40NzIzNDcyNnB4O2xpbmUtaGVpZ2h0OjEuMjU7Zm9udC1mYW1pbHk6c2Fucy1zZXJpZjtsZXR0ZXItc3BhY2luZzowcHg7d29yZC1zcGFjaW5nOjBweDtmaWxsOiMwMDAwMDA7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjEuNDYxODA4NTYiCiAgICAgICBpZD0idGV4dDM2ODIiPgogICAgICA8cGF0aAogICAgICAgICBkPSJtIDI0LjkxNDYyOSw1OS4yMTMxMzcgdiA4LjA4NTYyOSBsIC05LjMxOTAzMSwzLjgzNzI0OCBWIDYzLjE4NzQzIFogbSAtMC45NTkzMTIsMjYuMTc1NTEyIHYgNy4yNjMzNjIgbCAtNy41Mzc0NTEsMy40MjYxMTQgdiAtNy4xMjYzMTcgeiBtIDAsMjYuMzEyNTYxIHYgNy4xMjYzMSBsIC03LjUzNzQ1MSwzLjQyNjEyIHYgLTcuMTI2MzIgeiBtIDAuOTU5MzEyLDI1LjkwMTQyIHYgOC4wODU2MyBsIC05LjMxOTAzMSwzLjgzNzI0IHYgLTcuODExNTQgeiBtIC0wLjk1OTMxMiwyNy4yNzE4NyB2IDYuOTg5MjcgbCAtNy41Mzc0NTEsMy40MjYxMSB2IC03LjEyNjMxIHogbSAwLDI2LjU4NjY0IHYgNy4xMjYzMiBsIC03LjUzNzQ1MSwzLjQyNjExIHYgLTYuOTg5MjcgeiBtIDAuOTU5MzEyLDI1LjYyNzMzIHYgOC4yMjI2OCBsIC05LjMxOTAzMSwzLjgzNzI1IHYgLTcuODExNTQgeiBNIDQ4LjQ4NjI5Myw2My43MzU2MDggdiA5LjQ1NjA3NSBsIC0xMi42MDgwOTksNC43OTY1NTkgdiAtOS4zMTkwMyB6IG0gLTAuNjg1MjIyLDI3LjQwODkxMyB2IDguNjMzODA3IGwgLTEwLjE0MTI5OCwzLjk3NDI5MiB2IC04LjYzMzgwNyB6IG0gMCwyNi40NDk1OTkgdiA4LjQ5Njc2IGwgLTEwLjE0MTI5OCwzLjk3NDMgdiAtOC43NzA4NiB6IG0gMC42ODUyMjIsMjUuNDkwMjkgdiA5LjMxOTAzIGwgLTEyLjYwODA5OSw0LjkzMzYgdiAtOS4zMTkwMyB6IG0gLTAuNjg1MjIyLDI3LjQwODkxIHYgOC40OTY3NyBsIC0xMC4xNDEyOTgsNC4xMTEzMyB2IC04Ljc3MDg1IHogbSAwLDI2LjcyMzY5IHYgOC40OTY3NyBsIC0xMC4xNDEyOTgsNC4xMTEzMyB2IC04LjYzMzggeiBtIDAuNjg1MjIyLDI1LjYyNzM0IHYgOS4zMTkwMyBsIC0xMi42MDgwOTksNS4yMDc2OSB2IC05LjMxOTAzIHogTSA3Mi4wNTc5NTgsNjkuNjI4NTI0IHYgMTEuMjM3NjU0IGwgLTE2LjMwODMwMyw2LjQ0MTA5NSB2IC0xMS4xMDA2MSB6IG0gLTAuODIyMjY3LDI3LjU0NTk1NyB2IDEwLjAwNDI0OSBsIC0xMy43MDQ0NTYsNS4zNDQ3NCB2IC05LjczMDE2IHogbSAwLDI2LjQ0OTU5OSB2IDkuODY3MjEgbCAtMTMuNzA0NDU2LDUuNDgxNzggdiAtOS44NjcyMSB6IG0gMC44MjIyNjcsMjUuMzUzMjUgdiAxMS4yMzc2NSBsIC0xNi4zMDgzMDMsNi40NDExIHYgLTExLjEwMDYxIHogbSAtMC44MjIyNjcsMjcuNTQ1OTUgdiA5Ljg2NzIxIGwgLTEzLjcwNDQ1Niw1LjYxODgzIHYgLTkuODY3MjEgeiBtIDAsMjUuNjI3MzQgdiAxMC4xNDEzIGwgLTEzLjcwNDQ1Niw1LjQ4MTc4IHYgLTkuODY3MjEgeiBtIDAuODIyMjY3LDI1LjYyNzMzIHYgMTEuMjM3NjUgbCAtMTYuMzA4MzAzLDYuNTc4MTQgViAyMzQuMzU2MDkgWiBNIDk3LjgyMjMzNiw2OC45NDMzMDEgdiAxNC44MDA4MTMgbCAtMjAuNDE5NjQsOC4yMjI2NzQgViA3Ny4zMDMwMiBaIE0gOTYuNzI1OTgsOTYuNDg5MjU5IHYgMTMuNTY3NDExIGwgLTE3LjEzMDU3MSw2Ljk4OTI3IHYgLTEzLjU2NzQxIHogbSAwLDI2LjQ0OTYwMSB2IDEzLjQzMDM3IGwgLTE3LjEzMDU3MSw2Ljk4OTI3IHYgLTEzLjU2NzQxIHogbSAxLjA5NjM1NiwyNS40OTAyOSB2IDE0LjgwMDgxIGwgLTIwLjQxOTY0LDguMDg1NjMgdiAtMTQuODAwODEgeiBtIC0xLjA5NjM1NiwyNy41NDU5NiB2IDEzLjU2NzQxIGwgLTE3LjEzMDU3MSw2Ljg1MjIzIHYgLTEzLjU2NzQyIHogbSAwLDI1LjYyNzMzIHYgMTMuNTY3NDEgbCAtMTcuMTMwNTcxLDYuODUyMjMgdiAtMTMuNDMwMzcgeiBtIDEuMDk2MzU2LDI1LjQ5MDI5IHYgMTQuODAwODEgbCAtMjAuNDE5NjQsOC4yMjI2NyBWIDIzNS40NTI0NSBaIE0gMTI0LjgyMDEyLDY2LjQ3NjQ5OSB2IDE5LjMyMzI4NCBsIC0yMi43NDk0LDkuMzE5MDMgViA3NS43OTU1MjkgWiBtIC0xLjA5NjM2LDI5LjA1MzQ0OCB2IDE2LjE3MTI2MyBsIC0xOS40NjAzMyw3LjgxMTU0IHYgLTE2LjMwODMxIHogbSAwLDI1LjIxNjIwMyB2IDE2LjMwODMgbCAtMTkuNDYwMzMsNy42NzQ1IHYgLTE2LjE3MTI2IHogbSAxLjA5NjM2LDI1LjA3OTE1IHYgMTkuMzIzMjkgbCAtMjIuNzQ5NCw5LjE4MTk4IHYgLTE5LjMyMzI4IHogbSAtMS4wOTYzNiwyOC45MTY0IHYgMTYuNDQ1MzUgbCAtMTkuNDYwMzMsNy41Mzc0NSB2IC0xNi4xNzEyNiB6IG0gMCwyNS43NjQzOCB2IDE2LjMwODMxIGwgLTE5LjQ2MDMzLDcuODExNTQgdiAtMTYuMzA4MzEgeiBtIDEuMDk2MzYsMjQuMTE5ODUgdiAxOS4zMjMyOCBsIC0yMi43NDk0LDkuMTgxOTkgViAyMzMuODA3OTEgWiBNIDE1Mi4zNjYwNyw1Ni43NDYzMzUgViA4My4xOTU5MzYgTCAxMjguMTA5MTksOTMuMzM3MjM0IFYgNjguNjY5MjEyIHEgMTIuNjA4MDksLTcuMjYzMzYyIDI0LjI1Njg4LC0xMS45MjI4NzcgeiBtIDAsMjkuMTkwNDkyIHYgMjIuODg2NDQzIGwgLTI0LjI1Njg4LDEwLjI3ODM0IFYgOTYuMDc4MTI1IFogbSAwLDI1Ljc2NDM4MyB2IDIzLjE2MDUzIGwgLTI0LjI1Njg4LDEwLjI3ODM0IHYgLTIzLjE2MDUzIHogbSAwLDI2LjAzODQ2IHYgMjIuODg2NDQgbCAtMjQuMjU2ODgsMTAuMjc4MzUgdiAtMjMuMDIzNDkgeiBtIDAsMjUuNzY0MzggdiAyMy41NzE2NyBsIC0yNC4yNTY4OCwxMC40MTUzOCB2IC0yMy43MDg3MSB6IG0gMCwyNi40NDk2IHYgMjMuMDIzNDkgbCAtMjQuMjU2ODgsMTAuNTUyNDMgdiAtMjMuMjk3NTggeiBtIDAsMjUuOTAxNDIgdiAyNC42NjgwMyBxIC0xNC4yNTI2Myw1LjQ4MTc4IC0yNC4yNTY4OCwxMC41NTI0MyBWIDIyNi4yNzA0NiBaIE0gMjc4LjQ0NzA3LDU3LjcwNTY0NyBWIDI0Mi44NTI4NSBxIC0yMy40MzQ2MiwtMTUuMzQ4OTkgLTU4LjUxODAzLC0xNS4zNDg5OSAtMjkuMDUzNDQsMCAtNjQuOTU5MTIsMTIuMDU5OTIgdiAtMjQuNjY4MDIgcSAxOS4wNDkxOSwtNy41Mzc0NSA0MS45MzU2NCwtMTAuODI2NTIgViAxNDMuNzY5NjMgUSAxNzcuNTgyMjcsMTQ2LjIzNjQ0IDE1NC45Njk5MiwxNTcuMiB2IC0xNy42Nzg3NSBxIDE5LjU5NzM3LC05LjA0NDk0IDQxLjkzNTY0LC0xMi4zMzQwMSBWIDY4LjY2OTIxMiBRIDE3Ni43NjAwMSw3Mi41MDY0NiAxNTQuOTY5OTIsODEuNjg4NDQ2IFYgNTUuNjQ5OTc5IHEgMzEuOTMxMzgsLTEzLjAxOTIzNCA2Mi42MjkzNywtMTMuMDE5MjM0IDMzLjAyNzc0LDAgNjAuODQ3NzgsMTUuMDc0OTAyIHogbSAtMjQuMjU2ODksMTYuNTgyMzkyIHEgLTE1LjIxMTk0LC03LjY3NDQ5NSAtMzYuNDUzODUsLTcuNjc0NDk1IC0yLjQ2NjgsMCAtNC45MzM2LDAuMjc0MDg5IHYgNTkuMjAzMjQ3IGwgNS40ODE3OCwtMC4xMzcwNCBxIDE4LjIyNjkzLDAgMzUuOTA1NjcsNS43NTU4NyB6IG0gMCw3NC45NjMzODEgcSAtMTYuMzA4MywtNy4xMjYzMiAtMzYuMTc5NzYsLTcuMTI2MzIgLTIuNDY2OCwwIC01LjIwNzY5LDAuMjc0MDkgdiA2MC4yOTk2MSBoIDUuNDgxNzggcSAxOS44NzE0NiwwIDM1LjkwNTY3LDQuOTMzNiB6IG0gMTUuODk3MTcsMTAxLjEzODg4IHYgLTMuOTc0MjkgaCAtMS42NDQ1MyB2IC0wLjY4NTIyIGggMy45NzQyOSB2IDAuNjg1MjIgaCAtMS42NDQ1MyB2IDMuOTc0MjkgeiBtIDIuODc3OTQsMCB2IC00LjY1OTUxIGggMS4wOTYzNiBsIDEuNjQ0NTMsMy41NjMxNiAxLjY0NDU0LC0zLjU2MzE2IGggMS4wOTYzNSB2IDQuNjU5NTEgaCAtMC42ODUyMiB2IC0zLjgzNzI0IGwgLTEuNjQ0NTQsMy41NjMxNSBoIC0wLjgyMjI2IGwgLTEuNjQ0NTQsLTMuNTYzMTUgdiAzLjgzNzI0IHoiCiAgICAgICAgIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtd2VpZ2h0Om5vcm1hbDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtc2l6ZToyODAuNjY3MjY2ODVweDtmb250LWZhbWlseTpXaW5nZGluZ3M7LWlua3NjYXBlLWZvbnQtc3BlY2lmaWNhdGlvbjpXaW5nZGluZ3M7c3Ryb2tlLXdpZHRoOjEuNDQ5MDE5Nzk7ZmlsdGVyOnVybCgjZmlsdGVyMzcyNSkiCiAgICAgICAgIGlkPSJwYXRoMzY4NCIKICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIKICAgICAgICAgdHJhbnNmb3JtPSJtYXRyaXgoMC4xMTc1NjE3MSwwLDAsMC4xMjIzNTkyMiwxLjI2MDgyMTEsMjM3LjYzNDAzKSIgLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=');
-			background-size: contain;
-		}
-	</style>
 	<head>
 		<title>Flying Windows</title>
+		<style>
+			* {
+				background: black;
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				border: 0;
+				overflow: hidden;
+			}
+		</style>
 	</head>
 	<body>
-	</body>
-	<script>
-		(function() {
-			"use strict";
+		<canvas id="canvas"></canvas>
+		<script>
+			window.onload = function() {
+				"use strict";
 
-			//Constants///////////////////////////////////////////////////////////////////////////////
+				// Constants
+				const MIN_DEPTH = 0;
+				const MAX_DEPTH = 100;
+				const LOGO_WIDTH = 64;
+				const LOGO_HEIGHT = 64;
+				const LOGO_SPEED = 100;
 
-			// What framerate to run the algorithm in.
-			const FPS = 30;
-			// "delta time", used more as a speed scaler here.
-			const DT = 100 / FPS;
+				// Globals
+				const canvas = document.getElementById("canvas");
+				const ctx = canvas.getContext("2d", { alpha: false });
+				var last_time = Date.now();
+				var dt = 0.0;
 
-			// Logo settings.
-			const MAX_LOGOS = 100;
-			const MAX_TIME = 100;
-			const MAX_OFFSET = 100;
-			const LOGO_SCALE = 1;
-			
-			//Functions///////////////////////////////////////////////////////////////////////////////
-
-			function width(d) {
-				return document.body.offsetWidth / (d || 1);
-			}
-			function height(d) {
-				return document.body.offsetHeight / (d || 1);
-			}
-			function rand(min, max) {
-				return Math.random() * (max - min) + min;
-			}
-			
-			//Objects/////////////////////////////////////////////////////////////////////////////////
-
-			class Logo {
-				constructor() {
-					// Create element and add it to the document body.
-					this.elem = document.createElement("div");
-					this.elem.className = "logo";
-					this.elem.style.width = "0px";
-					this.elem.style.height = "0px";
-					this.elem.style.position = "absolute";
-					document.body.appendChild(this.elem);
-
-					// These are parameters for the element's filter.
-					// We'll use these to create different colors.
-					//
-					// They follow this sequence:
-					//   [brightness, saturation, hue]
-					//
-					// I wish I could just multiply a white image by RGB values though.
-					this.filters = [
-						[100, 100, 0],		// red
-						[200, 100, 90],		// green
-						[400, 0, 0],		// white
-						[20, 300, 240],		// blue
-						[110, 100, 180],	// cyan
-						[0, 0, 0],			// black
-						[50, 80, 300],		// pink
-						[120, 80, 70]		// yellow
-					]
-					this.curr_filter = this.filters[0];
-
-					// We'll make each logo start at a random time.
-					this.t = rand(0, MAX_TIME);
-					this.regenerate();
+				// Helper Functions
+				function rand(min, max) {
+					return Math.random() * (max - min) + min;
+				}
+				function width() { return document.body.offsetWidth; }
+				function height() { return document.body.offsetHeight; }
+				function normalize(x, min, max) {
+					return (x - min) / (max - min);
 				}
 
-				// Set the element's CSS filter
-				set_filter(brightness, saturate, hue_rotate) {
-					this.elem.style.filter = "brightness(" + brightness + "%) saturate(" + saturate + "%) hue-rotate(" + hue_rotate + "deg)";
-				}
+				class Logo {
+					constructor() {
+						this.colors = [
+							"#FF0000",
+							"#00FF00",
+							"#0000FF"
+						];
 
-				// Generate new random offsets, calculate the direction and get a random filter.
-				regenerate() {
-					this.offset_x = rand(0, width());
-					this.offset_y = rand(0, height());
-					this.dir_x = (this.offset_x - width(2)) / 100;
-					this.dir_y = (this.offset_y - height(2)) / 100;
-					this.curr_filter = this.filters[Math.floor(rand(0, this.filters.length))];
-				}
-
-				// Called on every frame.
-				update() {
-					if ((this.t += DT) > MAX_TIME) {
-						this.t = 0;
-						this.regenerate();
+						this.regenerate(rand(MIN_DEPTH, MAX_DEPTH));
 					}
-					
-					// We'll reduce the brightness according to the "depth" of the logo.
-					// It'll be darker the more distant it is from the viewer.
-					this.set_filter(this.curr_filter[0] * (this.t / MAX_TIME), this.curr_filter[1], this.curr_filter[2]);
-					
-					// This is where the fun begins.
-					this.elem.style.width = this.t * LOGO_SCALE + "px";
-					this.elem.style.height = this.t * LOGO_SCALE + "px";
-					this.elem.style.left = (this.offset_x + (this.t * this.dir_x)) + "px";
-					this.elem.style.top = (this.offset_y + (this.t * this.dir_y)) + "px";
+
+					regenerate(depth) {
+						this.depth = depth || MIN_DEPTH;
+						this.x = rand(0, width());
+						this.y = rand(0, height());
+						this.color = this.colors[Math.floor(rand(0, this.colors.length))];
+					}
+
+					update() {
+						if ((this.depth += LOGO_SPEED * dt) > MAX_DEPTH)
+							this.regenerate();
+						
+						const z = normalize(this.depth, MIN_DEPTH, MAX_DEPTH);
+						const w = z * LOGO_WIDTH;
+						const h = z * LOGO_HEIGHT;
+
+						// Render
+						ctx.fillStyle = this.color;
+						ctx.fillRect(this.x - w * 0.5, this.y - h * 0.5, w, h);
+					}
 				}
+
+				const l = new Logo();
+
+				// Main Loop
+				(function loop() {
+					const curr_time = Date.now();
+					dt = (curr_time - last_time) * 0.001;
+					last_time = curr_time;
+
+					canvas.width = width();
+					canvas.height = height();
+
+					l.update();
+
+					requestAnimationFrame(loop);
+				})();
 			}
-			
-			//Setup///////////////////////////////////////////////////////////////////////////////////
-
-			const logos = [];
-			for (var i = 0; i < MAX_LOGOS; ++i)
-				logos.push(new Logo());
-			
-			//Main Loop///////////////////////////////////////////////////////////////////////////////
-
-			setInterval(function() {
-				for (var i = 0; i < MAX_LOGOS; ++i)
-					logos[i].update();
-			}, 1000 / FPS);
-		})();
-	</script>
+		</script>
+	</body>
 </html>
