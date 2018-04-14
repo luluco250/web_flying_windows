@@ -5,7 +5,7 @@
 		<title>Flying Windows</title>
 		<style>
 			* {
-				background: black;
+				background-color:black;
 				width: 100%;
 				height: 100%;
 				margin: 0;
@@ -24,17 +24,18 @@
 				// Constants
 				const MIN_DEPTH = 0;
 				const MAX_DEPTH = 100;
-				const LOGO_WIDTH = 128;
-				const LOGO_HEIGHT = 128;
-				const LOGO_SPEED = 100;
+				//const LOGO_SPEED = 100;
+				const LOGO_MIN_SPEED = 50;
+				const LOGO_MAX_SPEED = 100;
 				const LOGO_COUNT = 100;
+				const LOGO_SCALE = 0.75;
 
 				// Globals
 				const canvas = document.getElementById("canvas");
 				const ctx = canvas.getContext("2d", { alpha: false });
 				var last_time = Date.now();
 				var dt = 0.0;
-				const logo_img = document.getElementById("logo");
+				const logo_source = document.getElementById("logo");
 
 				// Helper Functions
 				function rand(min, max) {
@@ -45,38 +46,79 @@
 				function normalize(x, min, max) {
 					return (x - min) / (max - min);
 				}
+				function colorize(img, color) {
+					const painter = document.createElement("canvas");
+					painter.width = img.width;
+					painter.height = img.height;
+
+					const brush = painter.getContext("2d");
+					brush.globalCompositeOperation = "source-atop";
+					brush.drawImage(img, 0, 0, painter.width, painter.height);
+					brush.fillStyle = color;
+					brush.fillRect(0, 0, painter.width, painter.height);
+
+					const new_img = new Image(painter.width, painter.height);
+					new_img.src = painter.toDataURL();
+					return new_img;
+				}
+
+				// Create Colorized Variants
+				const logo_images = [
+					colorize(logo_source, "#000000"),
+					colorize(logo_source, "#800000"),
+					colorize(logo_source, "#008000"),
+					colorize(logo_source, "#808000"),
+					colorize(logo_source, "#000080"),
+					colorize(logo_source, "#000080"),
+					colorize(logo_source, "#008080"),
+					colorize(logo_source, "#C0C0C0"),
+					colorize(logo_source, "#C0DCC0"),
+					colorize(logo_source, "#A6CAF0"),
+					colorize(logo_source, "#FFFBF0"),
+					colorize(logo_source, "#A0A0A4"),
+					colorize(logo_source, "#808080"),
+					colorize(logo_source, "#FF0000"),
+					colorize(logo_source, "#00FF00"),
+					colorize(logo_source, "#FFFF00"),
+					colorize(logo_source, "#0000FF"),
+					colorize(logo_source, "#FF00FF"),
+					colorize(logo_source, "#00FFFF"),
+					colorize(logo_source, "#FFFFFF")
+				];
 
 				class Logo {
-					constructor() {
-						this.colors = [
-							"#FF0000",
-							"#00FF00",
-							"#0000FF"
-						];
-
+					constructor(image) {
 						this.regenerate(rand(MIN_DEPTH, MAX_DEPTH));
 					}
 
 					regenerate(depth) {
 						this.depth = depth || MIN_DEPTH;
-						this.x = rand(0, width());
-						this.y = rand(0, height());
-						this.color = this.colors[Math.floor(rand(0, this.colors.length))];
+						this.start_x = rand(0, width());
+						this.start_y = rand(0, height());
+						this.dir_x = (this.start_x - width() * 0.5);
+						this.dir_y = (this.start_y - height() * 0.5);
+						this.speed = rand(LOGO_MIN_SPEED, LOGO_MAX_SPEED);
+						this.image = logo_images[Math.floor(rand(0, logo_images.length))];
 					}
 
 					update() {
-						if ((this.depth += LOGO_SPEED * dt) > MAX_DEPTH)
-							this.regenerate();
-						
-						const z = normalize(this.depth, MIN_DEPTH, MAX_DEPTH);
-						const w = z * LOGO_WIDTH;
-						const h = z * LOGO_HEIGHT;
+						this.depth += this.speed * dt;
+						if (this.depth >= MIN_DEPTH) {
+							if (this.depth > MAX_DEPTH)
+								this.regenerate();
+							
+							const z = normalize(this.depth, MIN_DEPTH, MAX_DEPTH);
+							const w = z * this.image.width * LOGO_SCALE;
+							const h = z * this.image.height * LOGO_SCALE;
 
-						// Render
-						ctx.drawImage(logo_img, this.x - w * 0.5, this.y - h * 0.5, w, h);
-						ctx.globalCompositeOperation = "source-atop";
-						ctx.fillStyle = this.color;
-						ctx.fillRect(this.x - w * 0.5, this.y - h * 0.5, w, h);
+							// Render
+							ctx.drawImage(
+								this.image,
+								z * this.dir_x + this.start_x,
+								z * this.dir_y + this.start_y,
+								w, h
+							);
+						}
 					}
 				}
 
@@ -96,12 +138,6 @@
 
 					for (var i = 0; i < LOGO_COUNT; ++i)
 						logos[i].update();
-					
-					/*ctx.drawImage(img, width() * 0.5, height() * 0.5);
-					
-					ctx.globalCompositeOperation = "source-atop";
-					ctx.fillStyle = "#FF0000";
-					ctx.fillRect(width() * 0.5, height() * 0.5, img.width, img.height);*/
 
 					requestAnimationFrame(loop);
 				});
