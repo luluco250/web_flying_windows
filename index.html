@@ -4,14 +4,6 @@
 	<head>
 		<title>Flying Windows</title>
 		<style>
-			/** {
-				background-color:black;
-				width: 100%;
-				height: 100%;
-				margin: 0;
-				border: 0;
-				overflow: hidden;
-			}*/
 			html, body {
 				background-color: black;
 				width: 100%;
@@ -35,6 +27,7 @@
 				const LOGO_COUNT = 100;
 				const LOGO_SCALE = 0.75;
 				const MAX_DT = 0.5;
+				const FPS = 15;
 
 				// Globals
 				const canvas = document.getElementById("canvas");
@@ -42,6 +35,7 @@
 				var last_time = performance.now();
 				var dt = 0.0;
 				const logo_source = document.getElementById("logo");
+				const inv_fps = 1 / FPS;
 
 				// Helper functions
 				function rand(min, max) {
@@ -145,23 +139,34 @@
 				for (var i = 0; i < LOGO_COUNT; ++i)
 					logos[i] = new Logo();
 
-				// Main loop
-				requestAnimationFrame(function loop(curr_time) {
-					dt = (curr_time - last_time) * 0.001;
-					last_time = curr_time;
-					
+				canvas.width = width();
+				canvas.height = height();
+				window.onresize = function(e) {
 					canvas.width = width();
 					canvas.height = height();
+				}
 
-					// Wait for the next frame if the time difference
-					// is too high. This prevents a glitch where
-					// minimizing or switching tabs caused all logos
-					// to go to the same depth, losing the randomness.
-					if (dt <= MAX_DT)
-						for (var i = 0; i < LOGO_COUNT; ++i)
-							logos[i].update();
-					
+				// Main loop
+				requestAnimationFrame(function loop(curr_time) {
 					requestAnimationFrame(loop);
+					dt = (curr_time - last_time) * 0.001;
+
+					// Framerate limiting
+					if (dt > inv_fps) {
+						last_time = curr_time;
+
+						// Wait for the next frame if the time difference
+						// is too high. This prevents a glitch where
+						// minimizing or switching tabs caused all logos
+						// to go to the same depth, losing the randomness.
+						if (dt <= MAX_DT) {
+
+							// Finally render the image
+							ctx.clearRect(0, 0, canvas.width, canvas.height);
+							for (var i = 0; i < LOGO_COUNT; ++i)
+								logos[i].update();
+						}
+					}
 				});
 			}
 		</script>
