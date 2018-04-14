@@ -16,6 +16,7 @@
 	</head>
 	<body>
 		<canvas id="canvas"></canvas>
+		<img id="logo" src="logo.svg" hidden="true"/>
 		<script>
 			window.onload = function() {
 				"use strict";
@@ -23,15 +24,17 @@
 				// Constants
 				const MIN_DEPTH = 0;
 				const MAX_DEPTH = 100;
-				const LOGO_WIDTH = 64;
-				const LOGO_HEIGHT = 64;
+				const LOGO_WIDTH = 128;
+				const LOGO_HEIGHT = 128;
 				const LOGO_SPEED = 100;
+				const LOGO_COUNT = 100;
 
 				// Globals
 				const canvas = document.getElementById("canvas");
 				const ctx = canvas.getContext("2d", { alpha: false });
 				var last_time = Date.now();
 				var dt = 0.0;
+				const logo_img = document.getElementById("logo");
 
 				// Helper Functions
 				function rand(min, max) {
@@ -70,15 +73,20 @@
 						const h = z * LOGO_HEIGHT;
 
 						// Render
+						ctx.drawImage(logo_img, this.x - w * 0.5, this.y - h * 0.5, w, h);
+						ctx.globalCompositeOperation = "source-atop";
 						ctx.fillStyle = this.color;
 						ctx.fillRect(this.x - w * 0.5, this.y - h * 0.5, w, h);
 					}
 				}
 
-				const l = new Logo();
+				// Setup
+				const logos = new Array(LOGO_COUNT);
+				for (var i = 0; i < LOGO_COUNT; ++i)
+					logos[i] = new Logo();
 
 				// Main Loop
-				(function loop() {
+				requestAnimationFrame(function loop() {
 					const curr_time = Date.now();
 					dt = (curr_time - last_time) * 0.001;
 					last_time = curr_time;
@@ -86,10 +94,17 @@
 					canvas.width = width();
 					canvas.height = height();
 
-					l.update();
+					for (var i = 0; i < LOGO_COUNT; ++i)
+						logos[i].update();
+					
+					/*ctx.drawImage(img, width() * 0.5, height() * 0.5);
+					
+					ctx.globalCompositeOperation = "source-atop";
+					ctx.fillStyle = "#FF0000";
+					ctx.fillRect(width() * 0.5, height() * 0.5, img.width, img.height);*/
 
 					requestAnimationFrame(loop);
-				})();
+				});
 			}
 		</script>
 	</body>
