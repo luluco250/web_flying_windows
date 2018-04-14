@@ -36,7 +36,7 @@
 				var dt = 0.0;
 				const logo_source = document.getElementById("logo");
 
-				// Helper Functions
+				// Helper functions
 				function rand(min, max) {
 					return Math.random() * (max - min) + min;
 				}
@@ -61,7 +61,7 @@
 					return new_img;
 				}
 
-				// Create Colorized Variants
+				// Create colorized variants
 				const logo_images = [
 					colorize(logo_source, "#000000"),
 					colorize(logo_source, "#800000"),
@@ -96,19 +96,16 @@
 						this.start_y = rand(0, height());
 						this.dir_x = (this.start_x - width() * 0.5);
 						this.dir_y = (this.start_y - height() * 0.5);
-						//this.speed = rand(LOGO_MIN_SPEED, LOGO_MAX_SPEED);
 						this.image = logo_images[Math.floor(rand(0, logo_images.length))];
 					}
 
 					update() {
-						//this.depth += this.speed * dt;
 						this.depth += LOGO_SPEED * dt;
 						
 						const z = normalize(this.depth, MIN_DEPTH, MAX_DEPTH);
 						const w = z * this.image.width * LOGO_SCALE;
 						const h = z * this.image.height * LOGO_SCALE;
-
-						// Render
+						
 						ctx.drawImage(
 							this.image,
 							z * this.dir_x + this.start_x,
@@ -126,7 +123,7 @@
 				for (var i = 0; i < LOGO_COUNT; ++i)
 					logos[i] = new Logo();
 
-				// Main Loop
+				// Main loop
 				requestAnimationFrame(function loop(curr_time) {
 					dt = (curr_time - last_time) * 0.001;
 					last_time = curr_time;
