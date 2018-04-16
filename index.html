@@ -22,10 +22,11 @@
 				"use strict";
 
 				// Constants
-				const MIN_DEPTH = 0;
+				const MIN_DEPTH = -100;
 				const MAX_DEPTH = 100;
-				const LOGO_SPEED = 100;
-				const LOGO_COUNT = 100;
+				const MAX_SPEED = 150;
+				const ACCELERATION = 50.0;
+				const LOGO_COUNT = 125;
 				const LOGO_SCALE = 0.75;
 				const MAX_DT = 0.5;
 				const FPS = 15;
@@ -37,13 +38,17 @@
 				var dt = 0.0;
 				const logo_source = document.getElementById("logo");
 				const inv_fps = 1 / FPS;
+				var speed = 0;
 
 				// Helper functions
-				function rand(min, max) {
+				function random(min, max) {
 					return Math.random() * (max - min) + min;
 				}
-				function width() { return window.innerWidth; } //document.body.offsetWidth; }
-				function height() { return window.innerHeight; } //document.body.offsetHeight; }
+				function lerp(a, b, t) {
+					return (1 - t) * a + t * b;
+				}
+				function width() { return window.innerWidth; }
+				function height() { return window.innerHeight; }
 				function normalize(x, min, max) {
 					return (x - min) / (max - min);
 				}
@@ -104,34 +109,55 @@
 
 				class Logo {
 					constructor(image) {
-						this.regenerate(rand(MIN_DEPTH, MAX_DEPTH));
+						// Start at a random depth
+						this.regenerate(random(MIN_DEPTH, MAX_DEPTH));
 					}
 
 					regenerate(depth) {
-						this.depth = depth || MIN_DEPTH;
-						this.start_x = rand(0, width());
-						this.start_y = rand(0, height());
-						this.dir_x = (this.start_x - width() * 0.5);
-						this.dir_y = (this.start_y - height() * 0.5);
-						this.image = logo_images[Math.floor(rand(0, logo_images.length))];
+						this.depth = depth || random(MIN_DEPTH, 0);
+						this.start_x = random(0, width());
+						this.start_y = random(0, height());
+						this.dir_x = this.start_x - width() * 0.5;
+						this.dir_y = this.start_y - height() * 0.5;
+						this.image = logo_images[Math.floor(random(0, logo_images.length))];
 					}
 
 					update() {
-						this.depth += LOGO_SPEED * dt;
+						this.depth += speed * dt;
+
+						// If the logo's depth is behind 0
+						// we skip to the next frame, skipping
+						// rendering until it's at a visible depth
+						if (this.depth < 0)
+							return;
 						
-						const z = normalize(this.depth, MIN_DEPTH, MAX_DEPTH);
+						// If the logo went past MAX_DEPTH, we regenerate
+						// it and only render it in the next frame
+						if (this.depth > MAX_DEPTH) {
+							this.regenerate();
+							return;
+						}
+
+						// Calculating the position ahead...
+						
+						// Scale the logo size with the depth
+						// normalized into in a 0.0<->1.0 range
+						const z = normalize(this.depth, 0, MAX_DEPTH);
 						const w = z * this.image.width * LOGO_SCALE;
 						const h = z * this.image.height * LOGO_SCALE;
-						
-						ctx.drawImage(
-							this.image,
-							z * this.dir_x + this.start_x - w * 0.5,
-							z * this.dir_y + this.start_y - h * 0.5,
-							w, h
-						);
 
-						if (this.depth > MAX_DEPTH)
+						const x = z * this.dir_x + this.start_x - w * 0.5;
+						const y = z * this.dir_y + this.start_y - h * 0.5;
+
+						// Check if the logo is out of bounds,
+						// if so, then we regenerate it
+						if ((x + w < 0 || x > width()) && (y + h < 0 || y > height())) {
 							this.regenerate();
+							return;
+						}
+						
+						// Render the logo
+						ctx.drawImage(this.image, x, y, w, h);
 					}
 				}
 
@@ -161,6 +187,13 @@
 						// minimizing or switching tabs caused all logos
 						// to go to the same depth, losing the randomness.
 						if (dt <= MAX_DT) {
+							// Accelerate global speed until MAX_SPEED
+							if (speed < MAX_SPEED) {
+								speed += ACCELERATION * dt;
+								
+								// Limit speed to MAX_SPEED (max speed)
+								speed = speed > MAX_SPEED ? MAX_SPEED : speed;
+							}
 
 							// Finally render the image
 							ctx.clearRect(0, 0, canvas.width, canvas.height);
